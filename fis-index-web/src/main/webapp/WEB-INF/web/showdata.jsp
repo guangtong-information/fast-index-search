@@ -18,10 +18,10 @@
 <%SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS"); %>
 执行开始时间：<% out.print(sf.format(DateTime.getNowDate()) + "<br/>"); %><br/>
 
-<form action="/index" method="get">
-    歌名：<input id="songName" type="text"/>
-    排序字段(stime、sortnum)：<input id="sort" type="text"/>
-    升序降序(A or D)：<input id="dirct" type="text"/>
+<form action="/index">
+    歌名：<input id="songName" name="songName" type="text" value="${songName}"/>
+    排序字段(stime、sortnum)：<input id="sort" name="sort" type="text" value="${sort}"/>
+    升序降序(A or D)：<input id="dirct" name="dirct" type="text" value="${dirct}"/>
     <input type="submit" value="搜索">
 </form>
 <br/><br/>

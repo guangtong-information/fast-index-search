@@ -6,6 +6,7 @@ import com.fis.web.tools.DateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class UpdateThread {
     @Resource
     private SongMainCache songMainCache;
 
-    //@PostConstruct
+    @PostConstruct
     public void Start() {
         _isRun = true;
         if (_cacheStatusList == null) {
