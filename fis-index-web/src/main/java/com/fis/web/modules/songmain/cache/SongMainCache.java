@@ -21,7 +21,7 @@ import java.util.concurrent.locks.ReentrantLock;
 @Service
 public class SongMainCache {
 
-    private static int cacheType = 2;  //1.本地缓存 2.redis缓存
+    private static int cacheType = 1;  //1.本地缓存 2.redis缓存
     private static String key = "fis-index-web:SongMain";
     private static String indexKey = "fis-index-web:SongMainIndexKey";
     private static List<SongMain> SongMainList = new ArrayList<SongMain>();
@@ -215,7 +215,6 @@ public class SongMainCache {
             GL.TotalRows = rows;
             Double totalPage = Math.ceil((double) rows / pageSize);
             GL.TotalPage = totalPage.intValue();
-
             return GL;
         }
 
@@ -251,6 +250,8 @@ public class SongMainCache {
                 temp2 = GetSort(temp2, sortDirection, sortExpression);
                 temp.addAll(temp1);
                 temp.addAll(temp2);
+                temp1 = null;
+                temp2 = null;
             } else {
                 // 排序
                 temp = GetSort(songMainList, sortDirection, sortExpression);
