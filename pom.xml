@@ -47,7 +47,7 @@
         <javax.servlet-api.version>4.0.0</javax.servlet-api.version>
 
         <lombok.version>1.18.2</lombok.version>
-        <hutool-all.version>4.0.5</hutool-all.version>
+        <hutool-all.version>4.1.12</hutool-all.version>
         <jasypt-spring-boot-starter.version>1.18</jasypt-spring-boot-starter.version>
 
         <commons-lang3.version>3.8</commons-lang3.version>
