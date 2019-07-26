@@ -232,34 +232,39 @@ public class SongMainCache {
     // / <summary>
     // / 获取列表索引
     // / </summary>
-    private Integer[] GetListIndex(List<SongMain> SongMainList,
+    private Integer[] GetListIndex(List<SongMain> songMainList,
                                    String SongName, String sortDirection, String sortExpression) {
         Integer[] index = null;
         Integer rows = 0;
-        if (SongMainList == null || SongMainList.size() <= 0) {
+        if (songMainList == null || songMainList.size() <= 0) {
             return new Integer[0];
         }
         try {
-
+            List<SongMain> temp = new ArrayList<>();
             // 关键字搜索
             if (StringUtils.hasText(SongName)) {
-                // 分词搜索
-                SongMainList = GetSearchList(SongMainList, SongName);
+
+                // 完全匹配
+                List<SongMain> temp1 = getWholeMatch(songMainList, SongName);
+                // 模糊匹配
+                List<SongMain> temp2 = getFuzzyMatch(songMainList, SongName);
+                temp2 = GetSort(temp2, sortDirection, sortExpression);
+                temp.addAll(temp1);
+                temp.addAll(temp2);
             } else {
                 // 排序
-                SongMainList = GetSort(SongMainList, sortDirection,
-                        sortExpression);
+                temp = GetSort(songMainList, sortDirection, sortExpression);
             }
 
             // 获取数据条数
-            rows = SongMainList.size();
+            rows = temp.size();
 
             // 加载list列表
             if (rows > 0) {
                 int w = 0;
                 index = new Integer[rows];
                 // 循环添加索引
-                for (SongMain songmod : SongMainList) {
+                for (SongMain songmod : temp) {
                     index[w] = songmod.IdRank;
                     w++;
                 }
@@ -322,10 +327,9 @@ public class SongMainCache {
     }
 
     // / <summary>
-    // / 分词搜索(用于搜索)
+    // / 名称搜索(完全匹配)
     // / </summary>
-    protected List<SongMain> GetSearchList(List<SongMain> SearchList,
-                                           String kw) {
+    protected List<SongMain> getWholeMatch(List<SongMain> SearchList, String kw) {
         try {
             List<SongMain> myList = new ArrayList<SongMain>();
             kw = kw.trim().toLowerCase();
@@ -337,9 +341,25 @@ public class SongMainCache {
                     myList.add(s);
             }
 
+            return myList;
+        } catch (Exception ex) {
+            log.error("", ex);
+            return SearchList;
+        }
+    }
+
+    // / <summary>
+    // / 名称搜索(模糊匹配)
+    // / </summary>
+    protected List<SongMain> getFuzzyMatch(List<SongMain> SearchList, String kw) {
+        try {
+            List<SongMain> myList = new ArrayList<SongMain>();
+            kw = kw.trim().toLowerCase();
+
             // 模糊匹配
             for (SongMain s : SearchList) {
-                if (s.SongName.contains(kw) || s.KeyWord.contains(kw))
+                if ((s.SongName.contains(kw) || s.KeyWord.contains(kw))
+                        && !s.SongName.equals(kw) && !s.KeyWord.equals(kw))
                     myList.add(s);
             }
 

@@ -8,6 +8,8 @@ import com.fis.web.tools.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +26,7 @@ public class CommController {
 
     @RequestMapping("index")
     public String getSongList(HttpServletRequest request, HttpServletResponse response) {
-        log.info("===========访问index.do页面开始===========");
+        log.info("===========访问index页面开始===========");
 
         //翻页
         Integer pg = NumberUtils.parseInt(request.getParameter("pg"));
@@ -59,6 +61,39 @@ public class CommController {
 
 
         return "showdata";
+    }
+
+    @ResponseBody
+    @RequestMapping("json")
+    public SongMainGroup getSongListJson(HttpServletRequest request, HttpServletResponse response) {
+        log.info("===========访问json页面开始===========");
+
+        //翻页
+        Integer pg = NumberUtils.parseInt(request.getParameter("pg"));
+        if (pg == 0)
+            pg = 1;
+        Integer pgsize = NumberUtils.parseInt(request.getParameter("pgsize"));
+        if (pgsize == 0)
+            pgsize = 12;
+
+        //搜索名称
+        String songName = request.getParameter("songName");
+        //排序字段
+        String sort = request.getParameter("sort");
+        if (!StringUtils.hasText(sort))
+            sort = "stime";
+        //排序规则
+        String dirct = request.getParameter("dirct");
+        if (!StringUtils.hasText(dirct))
+            dirct = "D";
+
+        return getDataList.getSongList(pg, pgsize, songName, dirct, sort);
+    }
+
+    @ResponseBody
+    @RequestMapping("null")
+    public String getSongListNull(HttpServletRequest request, HttpServletResponse response) {
+        return "";
     }
 
     @RequestMapping("gc")
