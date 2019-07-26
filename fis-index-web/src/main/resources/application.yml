@@ -1,0 +1,118 @@
+#内嵌服务器端口
+server:
+  port: 8030
+
+#指定视图文件存在的目录
+#注意：最后的“/”不能省略
+spring.mvc.view.prefix: /WEB-INF/web/
+#指定视图的后缀
+spring.mvc.view.suffix: .jsp
+
+#数据源配置 MyBatisConfig.class
+spring:
+  profiles:
+    active: dev
+  datasource:
+      url: jdbc:mysql://192.168.233.133:3306/song88?useSSL=false&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+      username: root
+      password: Aa123456
+      # 使用druid数据源
+      type: com.alibaba.druid.pool.DruidDataSource
+      druid:
+        # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+        filters: stat,wall
+        # 初始化大小，最小，最大
+        initial-size: 5
+        min-idle: 1
+        max-active: 20
+        # 配置获取连接等待超时的时间
+        max-wait: 60000
+        # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+        time-between-eviction-runs-millis: 60000
+        # 配置一个连接在池中最小生存的时间，单位是毫秒
+        min-evictable-idle-time-millis: 300000
+        validation-query: SELECT 1 FROM DUAL
+        test-while-idle: true
+        test-on-borrow: false
+        test-on-return: false
+        # 打开PSCache，并且指定每个连接上PSCache的大小
+        pool-prepared-statements: true
+        max-open-prepared-statements: 20
+        connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+        # 合并多个DruidDataSource的监控数据
+        use-global-data-source-stat: true
+  redis:
+    database: 0
+    host: 192.168.233.133
+    password:
+    port: 6379
+    pool:
+      max-idle: 10
+      max-active: 20
+
+
+#mybatis配置
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+  config-location: classpath:/mybatis-config.xml
+
+#日志相关
+logging:
+  config: classpath:logback.xml
+
+# dubbo最新配置，整合了注册中心配置
+dubbo:
+  scan:
+    base-packages: com.fis.web
+  application:
+    name: fis-index-web
+  protocol:
+    port: 28038
+    status: server
+  registry:
+    address: 192.168.233.133:2181
+    timeout: 6000
+    check: true
+    file: ./.dubbo/dubbo_registry
+    protocol: zookeeper
+  provider:
+    timeout: 6000
+    filter: dubboServiceFilter
+    validation: false
+  consumer:
+    id: commonConsum
+    timeout: 6000
+    filter: dubboServiceFilter
+    check: false
+    retries: 0
+    lazy: true
+
+#springboot管理相关，结合pringboot actuator一起使用
+management:
+  info:
+    git:
+      mode: full
+    build:
+      enabled: true
+    env:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    db:
+      enabled: true
+    #    redis:
+    #      enabled: true
+    diskspace:
+      enabled: true
+  endpoint:
+    shutdown:
+      enabled: true
+    health:
+      enabled: true
+      show-details: always
+    info:
+      enabled: true
+
