@@ -13,9 +13,9 @@ spring:
   profiles:
     active: dev
   datasource:
-      url: jdbc:mysql://192.168.233.133:3306/song88?useSSL=false&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+      url: jdbc:mysql://192.168.1.106:3306/song88?useSSL=false&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
       username: root
-      password: Aa123456
+      password: jianjianhe2020
       # 使用druid数据源
       type: com.alibaba.druid.pool.DruidDataSource
       druid:
@@ -42,8 +42,8 @@ spring:
         # 合并多个DruidDataSource的监控数据
         use-global-data-source-stat: true
   redis:
-    database: 0
-    host: 192.168.233.133
+    database: 14
+    host: 192.168.1.106
     password:
     port: 6379
     pool:

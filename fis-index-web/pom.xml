@@ -174,11 +174,8 @@
                 <directory>src/main/resources</directory>
             </resource>
             <resource>
-                <directory>src/main/script</directory>
-                <filtering>true</filtering>
-                <targetPath>
-                    ${project.basedir}/../target/
-                </targetPath>
+                <directory>src/main/webapp</directory>
+                <targetPath>META-INF/resources</targetPath>
             </resource>
         </resources>
 
